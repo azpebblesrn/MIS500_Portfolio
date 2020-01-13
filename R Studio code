@@ -1,0 +1,44 @@
+AZ_2013<-read.csv("~/MIS500/Portfolio/AZ_2013.csv", header=TRUE)
+AZ_2017<-read.csv("~/MIS500/Portfolio/AZ_2017.csv", header=TRUE)
+FL_2013<-read.csv("~/MIS500/Portfolio/FLA_2013.csv", header=TRUE)
+FL_2017<-read.csv("~/MIS500/Portfolio/FLA_2017.csv", header=TRUE)
+AZ_2013_Opioid<-AZ_2013$Opioid.Claim.Count
+AZ_2013_Opioid
+mean(AZ_2013_Opioid)
+AZ_2017_Opioid<-AZ_2017$Opioid.Claim.Count
+mean(AZ_2017_Opioid)
+FL_2013_Opioid<-FL_2013$Opioid.Claim.Count
+FL_2013_Opioid
+FL_2017_Opioid<-FL_2017$Opioid.Claim.Count
+Arizona<-data.frame(
+      group = rep(c("2013", "2017")),
+      opioid_claims = c(AZ_2013_Opioid, AZ_2017_Opioid)
+      )
+Arizona
+group_by(Arizona, group)%>%
+  summarise(
+    count = n(),
+    mean = mean(opioid_claims),
+    sd = sd(opioid_claims)
+    )
+ggboxplot(Arizona, x = "group", y = "opioid_claims", 
+          color = "group", palette = c("#00AFBB", "#E7B800"),
+          order = c("2013", "2017"),
+          ylab= "Opioid Claims", xlab = "Groups")
+Florida<-data.frame(
+  group = rep(c("2013", "2017")),
+  opioid_claims = c(FL_2013_Opioid, FL_2017_Opioid)
+)
+Florida
+group_by(Florida, group)%>%
+  summarise(
+    count = n(),
+    mean = mean(opioid_claims),
+    sd = sd(opioid_claims)
+  )
+ggboxplot(Florida, x = "group", y = "opioid_claims", 
+          color = "group", palette = c("#00AFBB", "#E7B800"),
+          order = c("2013", "2017"),
+          ylab= "Opioid Claims", xlab = "Groups")
+t.test(AZ_2013_Opioid, FL_2013_Opioid)
+t.test(AZ_2017_Opioid, FL_2017_Opioid)
