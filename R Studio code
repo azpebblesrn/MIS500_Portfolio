@@ -9,18 +9,22 @@ AZ_2017_Opioid<-AZ_2017$Opioid.Claim.Count
 mean(AZ_2017_Opioid)
 FL_2013_Opioid<-FL_2013$Opioid.Claim.Count
 FL_2013_Opioid
+mean(FL_2013_Opioid)
 FL_2017_Opioid<-FL_2017$Opioid.Claim.Count
+mean(FL_2017_Opioid)
+library(ggpubr)
+library(dplyr)
 Arizona<-data.frame(
-      group = rep(c("2013", "2017")),
-      opioid_claims = c(AZ_2013_Opioid, AZ_2017_Opioid)
-      )
+  group = rep(c("2013", "2017")),
+  opioid_claims = c(AZ_2013_Opioid, AZ_2017_Opioid)
+)
 Arizona
 group_by(Arizona, group)%>%
   summarise(
     count = n(),
     mean = mean(opioid_claims),
     sd = sd(opioid_claims)
-    )
+  )
 ggboxplot(Arizona, x = "group", y = "opioid_claims", 
           color = "group", palette = c("#00AFBB", "#E7B800"),
           order = c("2013", "2017"),
@@ -36,9 +40,12 @@ group_by(Florida, group)%>%
     mean = mean(opioid_claims),
     sd = sd(opioid_claims)
   )
-ggboxplot(Florida, x = "group", y = "opioid_claims", 
+ggboxplot(Arizona, x = "group", y = "opioid_claims", 
           color = "group", palette = c("#00AFBB", "#E7B800"),
           order = c("2013", "2017"),
           ylab= "Opioid Claims", xlab = "Groups")
 t.test(AZ_2013_Opioid, FL_2013_Opioid)
 t.test(AZ_2017_Opioid, FL_2017_Opioid)
+t.test(AZ_2013_Opioid, AZ_2017_Opioid)
+t.test(FL_2013_Opioid, FL_2017_Opioid)
+
